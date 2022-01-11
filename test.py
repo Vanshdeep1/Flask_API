@@ -15,7 +15,7 @@ Import Library
 pip install flask
 pip install flask_sqlalchemy
 pip install werkzeug.security
-pandas
+pip install pandas
 
 """
 from flask import Flask, render_template, request, session
@@ -27,7 +27,7 @@ import pandas as pd
 Create DataBase environment
 """
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']="postgresql://postgres:vansh123@localhost/sampledb"
+app.config['SQLALCHEMY_DATABASE_URI']="postgresql://postgres:password@localhost/sampledb"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'thisissecret'
 db=SQLAlchemy(app)
