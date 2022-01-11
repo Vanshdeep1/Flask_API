@@ -52,6 +52,7 @@ class User(db.Model):
 Create a Data Database for Saving the csv file by creating data table and using three arguments
 ID, Firstname, lastname
 """
+
 class Data(db.Model):
     __tablename__='data'
     id=db.Column(db.Integer,primary_key=True)
@@ -104,6 +105,7 @@ Syntax: API TESTING
     "password":"xxxxxxx"
     }
 """
+
 @app.route('/login', methods=['POST'])
 def login():
     if request.method=='POST':
@@ -154,22 +156,21 @@ def upload():
                 file=request.files['file']
                 df=pd.read_csv(file)
                 list_=df.values.tolist()
-                print(list_)
-                s=db.session()
+                set_data=db.session()
                 try:
-                    for i in list_:
+                    for row in list_:
                         record=Data(**{
-                            'firstname': i[0],
-                            'lastname':i[1]
+                            'firstname': row[0],
+                            'lastname':row[1]
                         })
-                        s.add(record)
-                    s.commit()
+                        set_data.add(record)
+                    set_data.commit()
                     return "Upload sucessfully"
                 except:
-                    s.rollback()
+                    set_data.rollback()
                     return "NOT Uploaded"
                 finally:
-                    s.close()
+                    set_data.close()
     except:
         return "Session expired"
 
@@ -269,10 +270,12 @@ def delete():
                 if _firstname:
                     stmt = Data.query.filter_by(firstname = _firstname).delete()
                     db.session.add(stmt)
+                    db.commit()
                     return "Deleted successfully"
                 elif _lastname:
                     stmt = Data.query.filter_by(firstname = _firstname).delete()
                     db.session.add(stmt)
+                    db.commit()
                 else:
                     return "unexpected input"
     
